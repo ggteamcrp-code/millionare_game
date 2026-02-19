@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кто хочет стать миллионером?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ФОН -->
+    <div class="dynamic-background"></div>
+
+    <!-- СТАРТОВЫЙ ЭКРАН -->
+    <div id="start-screen" class="overlay">
+        
+        <!-- ЛОГОТИП -->
+        <div class="logo-wrapper large">
+            <svg class="game-logo" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="silver-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="50%" stop-color="#a0b8d0" />
+                        <stop offset="100%" stop-color="#ffffff" />
+                    </linearGradient>
+                </defs>
+                <circle cx="150" cy="150" r="145" fill="rgba(2, 11, 32, 0.9)" stroke="#5d7ea0" stroke-width="2" />
+                <circle cx="150" cy="150" r="135" fill="none" stroke="#8daac8" stroke-width="1" opacity="0.5" />
+                <g class="spirograph">
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(0 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(20 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(40 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(60 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(80 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(100 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(120 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(140 150 150)" />
+                    <ellipse cx="150" cy="150" rx="130" ry="35" transform="rotate(160 150 150)" />
+                </g>
+                <path id="text-curve-top" d="M 40,150 A 110,110 0 0,1 260,150" fill="none" />
+                <path id="text-curve-bottom" d="M 40,150 A 110,110 0 0,0 260,150" fill="none" />
+                <text font-family="Times New Roman, serif" font-size="19" font-weight="bold" fill="url(#silver-grad)" letter-spacing="2">
+                    <textPath href="#text-curve-top" startOffset="50%" text-anchor="middle">КТО ХОЧЕТ СТАТЬ</textPath>
+                </text>
+                <text font-family="Times New Roman, serif" font-size="14" font-weight="bold" fill="url(#silver-grad)" letter-spacing="2" opacity="0.7">
+                    <textPath href="#text-curve-bottom" startOffset="50%" text-anchor="middle" side="left">МИЛЛИОНЕРОМ</textPath>
+                </text>
+            </svg>
+            <h1 class="main-logo-title">МИЛЛИОНЕРОМ</h1>
+        </div>
+        
+        <!-- МЕНЮ -->
+        <div class="start-menu">
+            <button id="start-btn" class="main-btn">ИГРАТЬ</button>
+            <button id="settings-btn" class="secondary-btn">НАСТРОЙКИ</button>
+        </div>
+    </div>
+
+    <!-- ОКНО НАСТРОЕК (MODAL) -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Настройки</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <!-- ВКЛАДКИ -->
+            <div class="tabs">
+                <button class="tab-link active" data-tab="general">Главные</button>
+                <button class="tab-link" data-tab="templates">Шаблоны</button>
+            </div>
+            
+            <!-- Вкладка: ГЛАВНЫЕ -->
+            <div id="tab-general" class="tab-content active">
+                <div class="setting-row">
+                    <span>Полноэкранный режим</span>
+                    <label class="switch">
+                        <input type="checkbox" id="fullscreen-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Вкладка: ШАБЛОНЫ (ИСПРАВЛЕННАЯ СТРУКТУРА) -->
+            <div id="tab-templates" class="tab-content">
+                <div class="templates-layout">
+                    
+                    <!-- ЛЕВАЯ КОЛОНКА (СПИСОК) -->
+                    <div class="templates-sidebar">
+                        <h3>Мои сценарии</h3>
+                        <div class="templates-list" id="templates-list">
+                            <!-- Сюда JS добавит список -->
+                        </div>
+                        <button class="add-question-btn" id="create-new-tpl-btn" style="width:100%; border:1px dashed #666; color:#ccc; margin-top:10px;">
+                            + Новый сценарий
+                        </button>
+                    </div>
+
+                    <!-- ПРАВАЯ КОЛОНКА (РЕДАКТОР) -->
+                    <div class="template-editor-wrapper">
+                        
+                        <!-- 1. РЕДАКТОР (Скрыт по умолчанию) -->
+                        <div id="template-editor-panel" class="hidden" style="display:flex; flex-direction:column; height:100%;">
+                            
+                            <!-- Имя сценария -->
+                            <div class="editor-header" style="margin-bottom:15px; border-bottom:1px solid #444; padding-bottom:10px;">
+                                <input type="text" id="tpl-name-input" placeholder="Название сценария..." class="input-title" 
+                                       style="width:100%; font-size:18px; color:gold; background:transparent; border:none; border-bottom:1px solid #666; padding:5px;">
+                            </div>
+
+                            <!-- Список вопросов (Скролл) -->
+                            <div class="questions-container" id="questions-container" style="flex:1; overflow-y:auto; margin-bottom:15px; padding-right:5px;">
+                                <!-- Карточки сюда JS добавит -->
+                            </div>
+
+                            <!-- ПАНЕЛЬ КНОПОК (ВНИЗУ) -->
+                            <div class="editor-bottom-controls" style="display:flex; gap:10px; margin-top:auto;">
+                                
+                                <button id="add-q-card-btn" class="secondary-btn" style="flex:1; border:1px dashed #666;">
+                                    + Вопрос
+                                </button>
+
+                                <button id="save-tpl-btn" class="main-btn" style="flex:1; background:linear-gradient(180deg, #004d00, #00cc00); border-color:#00ff00; padding:10px;">
+                                    💾 Сохранить
+                                </button>
+                                
+                                <button id="delete-tpl-btn" class="secondary-btn" style="width:50px; background:#4d0000; border-color:red; color:white;">
+                                    🗑
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. ПУСТОЙ ЭКРАН (Виден по умолчанию) -->
+                        <div id="editor-empty-state" style="height:100%; display:flex; justify-content:center; align-items:center; color:#666; text-align:center;">
+                            <p>Выберите сценарий слева<br>или создайте новый</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div> <!-- Конец tab-templates -->
+
+        </div> <!-- Конец modal-content -->
+    </div> <!-- Конец modal -->
+
+    <!-- ЭКРАН ПАУЗЫ -->
+    <div id="pause-screen" class="hidden"> <!-- Изначально скрыт CSS классом -->
+        <div class="pause-layout">
+            <div class="pause-left">
+                <div class="logo-wrapper small">
+                     <h1 class="pause-title">ПАУЗА</h1>
+                </div>
+                <div class="pause-menu">
+                    <button id="resume-btn" class="main-btn">ПРОДОЛЖИТЬ</button>
+                    <button id="quit-btn" class="secondary-btn">ЗАКОНЧИТЬ</button>
+                </div>
+            </div>
+            <div class="pause-right">
+                <div class="money-sidebar" id="money-tree"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЭКРАН ПОБЕДЫ -->
+    <div id="victory-screen" class="overlay hidden">
+        <div class="victory-content">
+            <h1>ИГРА ОКОНЧЕНА</h1>
+            <p>Ваш результат:</p>
+            <div class="final-score" id="final-score-display">0 ₽</div>
+            <button id="back-to-menu-btn" class="main-btn">В МЕНЮ</button>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ ЭКРАН ИГРЫ -->
+    <div class="game-container" id="game-ui" style="display: none;">
+        
+        <header class="game-header">
+            <!-- Таймер -->
+            <div class="timer-wrapper" id="timer-btn">
+                <svg class="timer-svg" width="80" height="80" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#0e1d42" stroke-width="8" />
+                    <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="#00aaff" stroke-width="8" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                </svg>
+                <div class="timer-text" id="timer-display">30</div>
+            </div>
+
+            <!-- Иконка Паузы -->
+            <div class="header-right-group">
+                <div class="pause-icon-btn" id="pause-trigger" title="Пауза">⏸</div>
+                <div class="lifelines-container">
+                    <div class="lifeline-btn" id="btn-5050">50:50</div>
+                    <div class="lifeline-btn" id="btn-phone">📞</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-board">
+             <div class="media-container hidden" id="question-image-area">
+                <div class="media-frame">
+                    <img src="" alt="Question Image" id="question-image" />
+                </div>
+            </div>
+            <div class="question-box-wrapper">
+                <div class="hex-box question-box">
+                    <div class="hex-content" id="question-text">Вопрос...</div>
+                </div>
+            </div>
+                        <!-- СЕТКА ОТВЕТОВ (ИСПРАВЛЕННАЯ) -->
+            <div class="answers-grid">
+                <!-- A -->
+                <div class="answer-wrapper">
+                    <div class="line-connector"></div>
+                    <div class="hex-box answer-box">
+                        <div class="hex-content">
+                            <span class="prefix">A:</span> 
+                            <!-- ВАЖНО: ID для текста ответа -->
+                            <span class="text" id="answer-text-0">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- B -->
+                <div class="answer-wrapper">
+                    <div class="line-connector"></div>
+                    <div class="hex-box answer-box">
+                        <div class="hex-content">
+                            <span class="prefix">B:</span> 
+                            <span class="text" id="answer-text-1">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- C -->
+                <div class="answer-wrapper">
+                    <div class="line-connector"></div>
+                    <div class="hex-box answer-box">
+                        <div class="hex-content">
+                            <span class="prefix">C:</span> 
+                            <span class="text" id="answer-text-2">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- D -->
+                <div class="answer-wrapper">
+                    <div class="line-connector"></div>
+                    <div class="hex-box answer-box">
+                        <div class="hex-content">
+                            <span class="prefix">D:</span> 
+                            <span class="text" id="answer-text-3">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Кнопка ПОДТВЕРДИТЬ -->
+        <div id="confirm-answer-btn" class="confirm-fab hidden">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+    </div>
+
+    <!-- СКРИПТ (Подключаем внешний файл) -->
+    <script src="game.js"></script> 
+
+</body>
+</html>
